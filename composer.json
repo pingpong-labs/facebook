@@ -1,0 +1,27 @@
+{
+    "name": "pingpong/facebook-v4",
+    "description": "Laravel 4 - Simple OAuth Facebook v4",
+    "keywords": ["oauth", "laravel", "facebook", "facebook-v4", "api", "guzzle"], 
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Pingpong Labs",
+            "email": "gue.warsono@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "illuminate/support": "4.*",
+        "guzzlehttp/guzzle": "*",
+        "facebook/php-sdk-v4" : "4.0.9"
+    },
+    "autoload": {
+        "psr-0": {
+            "Pingpong\\Facebook": "src/"
+        }
+    },
+    "minimum-stability": "stable",
+    "require-dev": {
+        "phpspec/phpspec2": "dev-master"
+    }
+}
