@@ -90,7 +90,7 @@ Facebook::getProfile();
 ```
 
 Logout the current active user.
-```
+```php
 Facebook::destroy();
 // or
 Facebook::logout();
