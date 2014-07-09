@@ -2,6 +2,10 @@ Facebook PHP SDK v4 for Laravel 4
 
 [![Build Status](https://travis-ci.org/pingpong-labs/facebook.svg?branch=master)](https://travis-ci.org/pingpong-labs/facebook)
 
+### Server Requirement
+
+This package is require PHP 5.4 or higher.
+
 ### Installation
 
 Open your composer.json file, and add the new required package.
