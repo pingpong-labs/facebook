@@ -11,6 +11,11 @@ class FacebookServiceProvider extends ServiceProvider {
 	 */
 	protected $defer = false;
 
+	/**
+	 * Boot the package.
+	 * 
+	 * @return void 
+	 */
 	public function boot()
 	{
 		$this->package('pingpong/facebook');

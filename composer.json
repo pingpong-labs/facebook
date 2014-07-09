@@ -12,16 +12,20 @@
     "require": {
         "php": ">=5.4.0",
         "illuminate/support": "4.*",
+        "illuminate/config": "4.*",
+        "illuminate/routing": "4.*",
+        "illuminate/session": "4.*",
         "guzzlehttp/guzzle": "*",
         "facebook/php-sdk-v4" : "4.0.9"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "4.1.3",
+        "mockery/mockery": "0.9.1"
     },
     "autoload": {
         "psr-0": {
             "Pingpong\\Facebook": "src/"
         }
     },
-    "minimum-stability": "stable",
-    "require-dev": {
-        "phpspec/phpspec2": "dev-master"
-    }
+    "minimum-stability": "stable"
 }
