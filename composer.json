@@ -1,5 +1,5 @@
 {
-    "name": "pingpong/facebook-v4",
+    "name": "pingpong/facebook",
     "description": "Laravel 4 - Simple OAuth Facebook v4",
     "keywords": ["oauth", "laravel", "facebook", "facebook-v4", "api", "guzzle"], 
     "license": "MIT",
