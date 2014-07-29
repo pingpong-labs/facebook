@@ -96,7 +96,7 @@ Facebook::destroy();
 Facebook::logout();
 ```
 
-Call the Facebook API. Here the example.
+Call the Facebook API.
 ```php
 Facebook::api($method, $path, $parameters, $version);
 

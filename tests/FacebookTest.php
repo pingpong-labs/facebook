@@ -53,12 +53,21 @@ class FacebookTest extends PHPUnit_Framework_TestCase
 
     function testGetLoginUrl()
     {
-        $this->config->shouldReceive('get')->once()->with('facebook::app_id')->andReturn('foo');
-        $this->config->shouldReceive('get')->once()->with('facebook::app_secret')->andReturn('bar');
         $this->config->shouldReceive('get')->once()->with('facebook::scope')->andReturn([]);
 
         $loginUrl = $this->facebook->getLoginUrl();
 
         $this->assertTrue(is_string($loginUrl));
+    }
+
+    function testAuthentication()
+    {
+        $this->config->shouldReceive('get')->once()->with('facebook::scope')->andReturn([]);
+
+        $this->redirect->shouldReceive('to')->once();
+
+        $actual = $this->facebook->authenticate();
+
+        $this->assertNull($actual);
     }
 }
