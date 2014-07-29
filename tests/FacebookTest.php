@@ -14,7 +14,7 @@ class FacebookTest extends PHPUnit_Framework_TestCase
     protected $appSecret;
     protected $redirect_url = '/';
 
-    public function setUp()
+    function setUp()
     {
         $this->session = m::mock('Illuminate\Session\Store');
         $this->redirect = m::mock('Illuminate\Routing\Redirector');
@@ -30,6 +30,11 @@ class FacebookTest extends PHPUnit_Framework_TestCase
             $this->appSecret,
             $this->redirect_url
         );
+    }
+
+    function tearDown()
+    {
+        m::close();
     }
 
     function testGetRedirectUrl()
