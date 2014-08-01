@@ -65,6 +65,18 @@ class Facebook
     }
 
     /**
+     * Set new redirect url.
+     * 
+     * @param $this $url 
+     */
+    public function setRedirectUrl($url)
+    {
+    	$this->redirect_url = $url;
+
+    	return $this;
+    }
+
+    /**
      * Get Facebook Redirect Login Helper.
      *
      * @return FacebookRedirectLoginHelper

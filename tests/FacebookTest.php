@@ -53,6 +53,9 @@ class FacebookTest extends PHPUnit_Framework_TestCase
 
     function testGetLoginUrl()
     {
+        $this->facebook->setRedirectUrl(null);
+
+        $this->config->shouldReceive('get')->once()->with('facebook::redirect_url', '/')->andReturn('foo');
         $this->config->shouldReceive('get')->once()->with('facebook::scope')->andReturn([]);
 
         $loginUrl = $this->facebook->getLoginUrl();
@@ -62,6 +65,9 @@ class FacebookTest extends PHPUnit_Framework_TestCase
 
     function testAuthentication()
     {
+        $this->facebook->setRedirectUrl(null);
+        
+        $this->config->shouldReceive('get')->once()->with('facebook::redirect_url', '/')->andReturn('foo');
         $this->config->shouldReceive('get')->once()->with('facebook::scope')->andReturn([]);
 
         $this->redirect->shouldReceive('to')->once();
