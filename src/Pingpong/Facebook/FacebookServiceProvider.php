@@ -36,7 +36,7 @@ class FacebookServiceProvider extends ServiceProvider {
 				$app['session.store'],
 				$app['redirect'],
 				$app['config'],
-				$config['app_id',
+				$config['app_id'],
 				$config['app_secret'],
 				$config['redirect_url']
 			);
