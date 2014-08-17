@@ -10,7 +10,7 @@ This package is require PHP 5.4 or higher.
 
 Open your composer.json file, and add the new required package.
 ```
-   "pingpong/facebook": "dev-master"
+   "pingpong/facebook": "1.0.*"
 ```
 Next, open a terminal and run.
 ```
