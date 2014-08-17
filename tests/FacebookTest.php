@@ -1,5 +1,7 @@
 <?php
 
+putenv('FACEBOOK_TESTING=1');
+
 use Mockery as m;
 use Pingpong\Facebook\Facebook;
 
@@ -56,8 +58,6 @@ class FacebookTest extends PHPUnit_Framework_TestCase
     {
         $this->facebook->setRedirectUrl(null);
 
-        $this->session->shouldReceive('put')->once()->andReturn(str_random());
-
         $this->config->shouldReceive('get')->once()->with('facebook::redirect_url', '/')->andReturn('foo');
         $this->config->shouldReceive('get')->once()->with('facebook::scope')->andReturn([]);
 
@@ -70,8 +70,6 @@ class FacebookTest extends PHPUnit_Framework_TestCase
     {
         $this->facebook->setRedirectUrl(null);
 
-        $this->session->shouldReceive('put')->once()->andReturn(str_random());
-        
         $this->config->shouldReceive('get')->once()->with('facebook::redirect_url', '/')->andReturn('foo');
         $this->config->shouldReceive('get')->once()->with('facebook::scope')->andReturn([]);
 

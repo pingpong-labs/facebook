@@ -2,12 +2,12 @@
 
 use Facebook\GraphUser;
 use Illuminate\Http\Request;
-use Facebook\FacebookRequest;
 use Illuminate\Session\Store;
+use Facebook\FacebookRequest;
+use Facebook\FacebookSession;
 use Illuminate\Config\Repository;
 use Illuminate\Routing\Redirector;
-use Pingpong\Facebook\Sdk\Session as FacebookSession;
-use Pingpong\Facebook\Sdk\RedirectLoginHelper as FacebookRedirectLoginHelper;
+use Facebook\FacebookRedirectLoginHelper;
 
 /**
  * Class Facebook
@@ -47,7 +47,7 @@ class Facebook
      * @param null $appId
      * @param null $appSecret
      */
-    public function __construct(Store $session, Redirector $redirect, Repository $config, Request $request, $appId = null, $appSecret = null, $redirect_url = null)
+    public function __construct(Store $session, Redirector $redirect, Repository $config, Request $request, $appId = null, $appSecret = null, $redirectUrl = null)
 	{
         $this->session      = $session;
         $this->redirect     = $redirect;
@@ -55,10 +55,44 @@ class Facebook
         $this->request      = $request;
 		$this->appId        = $appId;
         $this->appSecret    = $appSecret;
-        $this->redirect_url = $redirect_url;
+        $this->redirectUrl  = $redirectUrl;
 
-        FacebookSession::setDefaultApplication($appId, $appSecret);
+        $this->init();
+    }
 
+    public function init()
+    {
+    	FacebookSession::setDefaultApplication($this->appId, $this->appSecret);
+        
+        if( ! getenv('FACEBOOK_TESTING'))
+        {
+        	$this->start();
+        }
+    }
+
+    public function start()
+    {
+    	session_start();
+    }
+
+    public function getRequest()
+    {
+    	return $this->request;
+    }
+
+    public function getSession()
+    {
+    	return $this->session;
+    }
+
+    public function getConfig()
+    {
+    	return $this->config;
+    }
+
+    public function getRedirect()
+    {
+    	return $this->redirect;
     }
 
     /**
@@ -68,7 +102,7 @@ class Facebook
      */
     public function getRedirectUrl()
     {
-        return $this->redirect_url ?: $this->config->get('facebook::redirect_url', '/');
+        return $this->redirectUrl ?: $this->config->get('facebook::redirect_url', '/');
     }
 
     /**
@@ -78,7 +112,7 @@ class Facebook
      */
     public function setRedirectUrl($url)
     {
-    	$this->redirect_url = $url;
+    	$this->redirectUrl = $url;
 
     	return $this;
     }
@@ -90,14 +124,15 @@ class Facebook
      */
     public function getFacebookHelper()
     {
-        $appId      = $this->appId      ?: $this->config->get('facebook::app_id');
-        $appSecret  = $this->appSecret  ?: $this->config->get('facebook::app_secret');
+        $redirectHelper = new FacebookRedirectLoginHelper(
+        	$this->getRedirectUrl(),
+        	$this->appId,
+        	$this->appSecret
+        );
 
-        $helper = new FacebookRedirectLoginHelper($this->getRedirectUrl(), $appId, $appSecret);
-   		$helper->setSession($this->session)
-   			   ->setRequest($this->request);
+        $redirectHelper->disableSessionStatusCheck();
 
-   		return $helper;
+        return $redirectHelper;
     }
 
 	/**
@@ -111,12 +146,60 @@ class Facebook
 	}
 
 	/**
+	 * Get AppSecret.
+	 * 
+	 * @return string 
+	 */
+	public function getAppSecret()
+	{
+		return $this->appSecret;
+	}
+
+	/**
+	 * Set current appId (runtime mode).
+	 * 
+	 * @param 	string $appId
+	 * @return 	self 
+	 */
+	public function setAppId($appId)
+	{
+		$this->appId = $appId;
+	
+		return $this;
+	}
+
+	/**
+	 * Set current appSecret (runtime mode).
+	 * 
+	 * @param  string $appSecret
+	 * @return self 
+	 */
+	public function setAppSecret($appSecret)
+	{
+		$this->appSecret = $appSecret;
+
+		return $this;
+	}
+
+	/**
+	 * Set current appId and appSecret. 
+	 * 
+	 * @param 	string $id
+	 * @param 	string $secret
+	 * @return  self
+	 */
+	public function setApp($id, $secret)
+	{
+		return $this->setAppId($id)->setAppSecret($secret);
+	}
+
+	/**
 	 * Get scope.
 	 * 
 	 * @param  array  $merge 
 	 * @return string|mixed        
 	 */
-	protected function getScope($merge = array())
+	public function getScope($merge = array())
 	{
 		if(count($merge) > 0) return $merge;
 
@@ -157,7 +240,7 @@ class Facebook
 	public function getSessionFromRedirect()
 	{
 		$session = $this->getFacebookHelper()->getSessionFromRedirect();
-	  	
+	  		
 	  	$this->session->put('facebook.session', $session);
 	  	
 	  	return $session;
@@ -230,6 +313,7 @@ class Facebook
 		if( ! empty($token))
 		{
 			$this->putSessionToken($token);
+
 			return true;
 		}
 		return false;
@@ -278,7 +362,7 @@ class Facebook
 	 */
 	public function api($method, $path, $parameters  = null, $version = null, $etag = null)
 	{
-		$session = $this->getFacebookSession();
+		$session = new FacebookSession($this->getAccessToken());
 
 		$request = with(new FacebookRequest($session, $method, $path, $parameters, $version, $etag))
 			->execute()

@@ -137,6 +137,33 @@ DELETE Request
 ```php
 Facebook::delete('/me', $parameters);
 ```
+### Example
+
+**Authentication and authorization**
+
+```php
+Route::group(['prefix' => 'facebook'], function ()
+{
+	Route::get('connect', function ()
+	{
+		return Facebook::authenticate();
+	});
+
+	Route::get('callback', function ()
+	{
+		$callback = Facebook::getCallback();
+
+		if($callback)
+		{
+			$profile = Facebook::getProfile();
+			
+			dd($profile);
+		}
+
+		dd($callback);
+	});
+});
+```
 
 ### License
 
