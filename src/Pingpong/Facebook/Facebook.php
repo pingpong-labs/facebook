@@ -1,12 +1,13 @@
 <?php namespace Pingpong\Facebook;
 
 use Facebook\GraphUser;
+use Illuminate\Http\Request;
 use Facebook\FacebookRequest;
-use Facebook\FacebookSession;
 use Illuminate\Session\Store;
 use Illuminate\Config\Repository;
 use Illuminate\Routing\Redirector;
-use Facebook\FacebookRedirectLoginHelper;
+use Pingpong\Facebook\Sdk\Session as FacebookSession;
+use Pingpong\Facebook\Sdk\RedirectLoginHelper as FacebookRedirectLoginHelper;
 
 /**
  * Class Facebook
@@ -25,6 +26,11 @@ class Facebook
     protected $redirect;
 
     /**
+     * @var Request
+     */
+    protected $request;
+
+    /**
      * @var Repository
      */
     protected $config;
@@ -41,11 +47,12 @@ class Facebook
      * @param null $appId
      * @param null $appSecret
      */
-    public function __construct(Store $session, Redirector $redirect, Repository $config, $appId = null, $appSecret = null, $redirect_url = null)
+    public function __construct(Store $session, Redirector $redirect, Repository $config, Request $request, $appId = null, $appSecret = null, $redirect_url = null)
 	{
         $this->session      = $session;
         $this->redirect     = $redirect;
         $this->config       = $config;
+        $this->request      = $request;
 		$this->appId        = $appId;
         $this->appSecret    = $appSecret;
         $this->redirect_url = $redirect_url;
@@ -86,7 +93,11 @@ class Facebook
         $appId      = $this->appId      ?: $this->config->get('facebook::app_id');
         $appSecret  = $this->appSecret  ?: $this->config->get('facebook::app_secret');
 
-        return new FacebookRedirectLoginHelper($this->getRedirectUrl(), $appId, $appSecret);
+        $helper = new FacebookRedirectLoginHelper($this->getRedirectUrl(), $appId, $appSecret);
+   		$helper->setSession($this->session)
+   			   ->setRequest($this->request);
+
+   		return $helper;
     }
 
 	/**

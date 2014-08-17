@@ -1,7 +1,5 @@
 <?php
 
-session_start();
-
 use Mockery as m;
 use Pingpong\Facebook\Facebook;
 
@@ -10,6 +8,7 @@ class FacebookTest extends PHPUnit_Framework_TestCase
     protected $session;
     protected $redirect;
     protected $config;
+    protected $request;
     protected $appId;
     protected $appSecret;
     protected $redirect_url = '/';
@@ -19,6 +18,7 @@ class FacebookTest extends PHPUnit_Framework_TestCase
         $this->session = m::mock('Illuminate\Session\Store');
         $this->redirect = m::mock('Illuminate\Routing\Redirector');
         $this->config = m::mock('Illuminate\Config\Repository');
+        $this->request = m::mock('Illuminate\Http\Request');
         $this->appId = 'appid';
         $this->appSecret = 'secret';
 
@@ -26,6 +26,7 @@ class FacebookTest extends PHPUnit_Framework_TestCase
             $this->session,
             $this->redirect,
             $this->config,
+            $this->request,
             $this->appId,
             $this->appSecret,
             $this->redirect_url
@@ -46,7 +47,7 @@ class FacebookTest extends PHPUnit_Framework_TestCase
 
     function testGetFacebookLoginHelper()
     {
-        $facebookLoginHelper = $this->facebook->getFacebookHelper();
+        $facebookLoginHelper = $this->facebook->getFacebookHelper();        
 
         $this->assertInstanceOf('Facebook\FacebookRedirectLoginHelper', $facebookLoginHelper);
     }
@@ -54,6 +55,8 @@ class FacebookTest extends PHPUnit_Framework_TestCase
     function testGetLoginUrl()
     {
         $this->facebook->setRedirectUrl(null);
+
+        $this->session->shouldReceive('put')->once()->andReturn(str_random());
 
         $this->config->shouldReceive('get')->once()->with('facebook::redirect_url', '/')->andReturn('foo');
         $this->config->shouldReceive('get')->once()->with('facebook::scope')->andReturn([]);
@@ -66,6 +69,8 @@ class FacebookTest extends PHPUnit_Framework_TestCase
     function testAuthentication()
     {
         $this->facebook->setRedirectUrl(null);
+
+        $this->session->shouldReceive('put')->once()->andReturn(str_random());
         
         $this->config->shouldReceive('get')->once()->with('facebook::redirect_url', '/')->andReturn('foo');
         $this->config->shouldReceive('get')->once()->with('facebook::scope')->andReturn([]);
