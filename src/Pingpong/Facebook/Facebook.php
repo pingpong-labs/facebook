@@ -57,39 +57,56 @@ class Facebook
         $this->appSecret    = $appSecret;
         $this->redirectUrl  = $redirectUrl;
 
-        $this->init();
-    }
-
-    public function init()
-    {
-    	FacebookSession::setDefaultApplication($this->appId, $this->appSecret);
+		FacebookSession::setDefaultApplication($this->appId, $this->appSecret);
         
-        if( ! getenv('FACEBOOK_TESTING'))
-        {
-        	$this->start();
-        }
+        if( ! getenv('FACEBOOK_TESTING')) $this->start();
     }
 
+    /**
+     * Start the native php session. Require by facebook.
+     * 
+     * @return void 
+     */
     public function start()
     {
     	session_start();
     }
 
+    /**
+     * Getter for "request".
+     * 
+     * @return \Illuminate\Http\Request 
+     */
     public function getRequest()
     {
     	return $this->request;
     }
 
+    /**
+     * Getter for "session".
+     * 
+     * @return \Illuminate\Session\Store 
+     */
     public function getSession()
     {
     	return $this->session;
     }
 
+    /**
+     * Getter for "config".
+     * 
+     * @return \Illuminate\Config\Repository 
+     */
     public function getConfig()
     {
     	return $this->config;
     }
 
+    /**
+     * Getter for "redirect".
+     * 
+     * @return \Illuminate\Routing\Redirector 
+     */
     public function getRedirect()
     {
     	return $this->redirect;
@@ -451,4 +468,5 @@ class Facebook
 	{
 		return $this->get('/me');
 	}
+	
 }
