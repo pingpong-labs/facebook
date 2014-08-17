@@ -89,6 +89,11 @@ Get user profile for the current logged in user.
 Facebook::getProfile();
 ```
 
+Get call back from redirect. Will return a value of true if the authentication is successful and otherwise.
+```php
+Facebook::getCallback();
+```
+
 Logout the current active user.
 ```php
 Facebook::destroy();
