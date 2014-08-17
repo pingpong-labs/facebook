@@ -89,6 +89,11 @@ Get user profile for the current logged in user.
 Facebook::getProfile();
 ```
 
+Get call back from redirect. Will return a value of true if the authentication is successful and otherwise.
+```php
+Facebook::getCallback();
+```
+
 Logout the current active user.
 ```php
 Facebook::destroy();
@@ -136,6 +141,33 @@ Facebook::patch('/me', $parameters);
 DELETE Request
 ```php
 Facebook::delete('/me', $parameters);
+```
+### Example
+
+**Authentication and authorization**
+
+```php
+Route::group(['prefix' => 'facebook'], function ()
+{
+	Route::get('connect', function ()
+	{
+		return Facebook::authenticate();
+	});
+
+	Route::get('callback', function ()
+	{
+		$callback = Facebook::getCallback();
+
+		if($callback)
+		{
+			$profile = Facebook::getProfile();
+			
+			dd($profile);
+		}
+
+		dd($callback);
+	});
+});
 ```
 
 ### License
