@@ -30,10 +30,17 @@ class FacebookServiceProvider extends ServiceProvider {
 	{
 		$this->app['pingpong.facebook'] = $this->app->share(function($app)
 		{
-			$appId 		= $app['config']->get('facebook::app_id');
-			$appSecret 	= $app['config']->get('facebook::app_secret');
+			$config = $app['config']->get('facebook::config');
 
-			return new Facebook($app, $appId, $appSecret);
+			return new Facebook(
+				$app['session.store'],
+				$app['redirect'],
+				$app['config'],
+				$app['request'],
+				$config['app_id'],
+				$config['app_secret'],
+				$config['redirect_url']
+			);
 		});
 	}
 
