@@ -5,14 +5,20 @@ putenv('FACEBOOK_TESTING=1');
 use Mockery as m;
 use Pingpong\Facebook\Facebook;
 
-class FacebookTest extends PHPUnit_Framework_TestCase
-{
+class FacebookTest extends PHPUnit_Framework_TestCase {
+
     protected $session;
+
     protected $redirect;
+
     protected $config;
+
     protected $request;
+
     protected $appId;
+
     protected $appSecret;
+
     protected $redirect_url = '/';
 
     function setUp()
@@ -49,7 +55,7 @@ class FacebookTest extends PHPUnit_Framework_TestCase
 
     function testGetFacebookLoginHelper()
     {
-        $facebookLoginHelper = $this->facebook->getFacebookHelper();        
+        $facebookLoginHelper = $this->facebook->getFacebookHelper();
 
         $this->assertInstanceOf('Facebook\FacebookRedirectLoginHelper', $facebookLoginHelper);
     }
