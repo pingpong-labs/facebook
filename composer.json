@@ -1,6 +1,6 @@
 {
     "name": "pingpong/facebook",
-    "description": "Laravel 4 - Simple OAuth Facebook v4",
+    "description": "Facebook OAuth v4 for Laravel Framework",
     "keywords": ["oauth", "laravel", "facebook", "facebook-v4", "api", "guzzle"], 
     "license": "BSD-3-Clause",
     "authors": [
