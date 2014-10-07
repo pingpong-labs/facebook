@@ -467,11 +467,14 @@ class Facebook {
     /**
      * Get user profile.
      *
+     * @param  array $parameters
+     * @param  null  $version
+     * @param  null  $etag
      * @return mixed
      */
-    public function getProfile()
+    public function getProfile($parameters = [], $version = null, $etag = null)
     {
-        return $this->get('/me');
+        return $this->get('/me', $parameters, $version, $etag);
     }
 
 }
