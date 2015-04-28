@@ -8,9 +8,11 @@ This package is require PHP 5.4 or higher.
 
 ### Installation
 
+> For Laravel 4 please use version `1.*`.
+
 Open your composer.json file, and add the new required package.
 ```
-   "pingpong/facebook": "1.0.*"
+   "pingpong/facebook": "~2.0"
 ```
 Next, open a terminal and run.
 ```
@@ -31,7 +33,7 @@ Next, Add new aliases in `app/config/app.php`.
 
 Next, publish the configuration.
 ```
-php artisan config:publish pingpong/facebook
+php artisan vendor:publish --provider="Pingpong\Facebook\FacebookServiceProvider"
 ```
 
 Done.
