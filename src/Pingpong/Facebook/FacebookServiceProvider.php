@@ -2,7 +2,8 @@
 
 use Illuminate\Support\ServiceProvider;
 
-class FacebookServiceProvider extends ServiceProvider {
+class FacebookServiceProvider extends ServiceProvider
+{
 
     /**
      * Indicates if loading of the provider is deferred.
@@ -17,7 +18,7 @@ class FacebookServiceProvider extends ServiceProvider {
      * @return void
      */
     public function boot()
-    {        
+    {
         $configPath = config_path('facebook.php');
 
         $this->publishes([
@@ -34,8 +35,7 @@ class FacebookServiceProvider extends ServiceProvider {
      */
     public function register()
     {
-        $this->app['pingpong.facebook'] = $this->app->share(function ($app)
-        {
+        $this->app['pingpong.facebook'] = $this->app->share(function ($app) {
             $config = $app['config']->get('facebook');
 
             return new Facebook(
@@ -59,5 +59,4 @@ class FacebookServiceProvider extends ServiceProvider {
     {
         return array('pingpong.facebook');
     }
-
 }

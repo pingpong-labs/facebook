@@ -9,7 +9,8 @@ use Illuminate\Config\Repository;
 use Illuminate\Routing\Redirector;
 use Facebook\FacebookRedirectLoginHelper;
 
-class Facebook {
+class Facebook
+{
 
     /**
      * @var Store
@@ -55,8 +56,7 @@ class Facebook {
 
         FacebookSession::setDefaultApplication($this->appId, $this->appSecret);
 
-        if ( ! getenv('FACEBOOK_TESTING'))
-        {
+        if (! getenv('FACEBOOK_TESTING')) {
             $this->start();
         }
     }
@@ -123,7 +123,7 @@ class Facebook {
 
     /**
      * Get redirect url from config file.
-     * 
+     *
      * @return mixed
      */
     public function getRedirectUrlFromConfig()
@@ -230,8 +230,7 @@ class Facebook {
      */
     public function getScope($merge = array())
     {
-        if (count($merge) > 0)
-        {
+        if (count($merge) > 0) {
             return $merge;
         }
 
@@ -329,8 +328,7 @@ class Facebook {
      */
     public function getAccessToken()
     {
-        if ($this->hasSessionToken())
-        {
+        if ($this->hasSessionToken()) {
             return $this->getSessionToken();
         }
 
@@ -345,8 +343,7 @@ class Facebook {
     public function getCallback()
     {
         $token = $this->getAccessToken();
-        if ( ! empty($token))
-        {
+        if (! empty($token)) {
             $this->putSessionToken($token);
 
             return true;
@@ -488,5 +485,4 @@ class Facebook {
     {
         return $this->get('/me', $parameters, $version, $etag);
     }
-
 }

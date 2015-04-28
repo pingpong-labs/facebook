@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 use Mockery as m;
 use Pingpong\Facebook\Facebook;
 
-class FacebookTest extends PHPUnit_Framework_TestCase {
+class FacebookTest extends PHPUnit_Framework_TestCase
+{
 
     protected $session;
 
@@ -22,7 +23,7 @@ class FacebookTest extends PHPUnit_Framework_TestCase {
 
     protected $redirect_url = '/';
 
-    function setUp()
+    public function setUp()
     {
         $this->session = m::mock('Illuminate\Session\Store');
         $this->redirect = m::mock('Illuminate\Routing\Redirector');
@@ -42,19 +43,19 @@ class FacebookTest extends PHPUnit_Framework_TestCase {
         );
     }
 
-    function tearDown()
+    public function tearDown()
     {
         m::close();
     }
 
-    function testGetRedirectUrl()
+    public function testGetRedirectUrl()
     {
         $redirectUrl = $this->facebook->getRedirectUrl();
 
         $this->assertEquals('/', $redirectUrl);
     }
 
-    function testGetFacebookLoginHelper()
+    public function testGetFacebookLoginHelper()
     {
         $facebookLoginHelper = $this->facebook->getFacebookHelper();
 
@@ -69,7 +70,7 @@ class FacebookTest extends PHPUnit_Framework_TestCase {
         );
     }
 
-    function testGetLoginUrl()
+    public function testGetLoginUrl()
     {
         $this->facebook->setRedirectUrl(null);
 
@@ -84,7 +85,7 @@ class FacebookTest extends PHPUnit_Framework_TestCase {
         $this->assertTrue(is_string($loginUrl));
     }
 
-    function testAuthentication()
+    public function testAuthentication()
     {
         $this->facebook->setRedirectUrl(null);
 
