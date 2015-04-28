@@ -2,6 +2,7 @@
 
 putenv('FACEBOOK_TESTING=1');
 
+use Illuminate\Http\Request;
 use Mockery as m;
 use Pingpong\Facebook\Facebook;
 
@@ -60,12 +61,23 @@ class FacebookTest extends PHPUnit_Framework_TestCase {
         $this->assertInstanceOf('Facebook\FacebookRedirectLoginHelper', $facebookLoginHelper);
     }
 
+    public function getDummyUrlGenerator()
+    {
+        return new Illuminate\Routing\UrlGenerator(
+            new Illuminate\Routing\RouteCollection,
+            new Request
+        );
+    }
+
     function testGetLoginUrl()
     {
         $this->facebook->setRedirectUrl(null);
 
-        $this->config->shouldReceive('get')->once()->with('facebook::redirect_url', '/')->andReturn('foo');
-        $this->config->shouldReceive('get')->once()->with('facebook::scope')->andReturn([]);
+        $this->config->shouldReceive('get')->once()->with('facebook.redirect_url', '/')->andReturn('foo');
+        $this->config->shouldReceive('get')->once()->with('facebook.scope')->andReturn([]);
+        $this->redirect->shouldReceive('getUrlGenerator')
+            ->once()
+            ->andReturn($this->getDummyUrlGenerator());
 
         $loginUrl = $this->facebook->getLoginUrl();
 
@@ -76,8 +88,11 @@ class FacebookTest extends PHPUnit_Framework_TestCase {
     {
         $this->facebook->setRedirectUrl(null);
 
-        $this->config->shouldReceive('get')->once()->with('facebook::redirect_url', '/')->andReturn('foo');
-        $this->config->shouldReceive('get')->once()->with('facebook::scope')->andReturn([]);
+        $this->config->shouldReceive('get')->once()->with('facebook.redirect_url', '/')->andReturn('foo');
+        $this->config->shouldReceive('get')->once()->with('facebook.scope')->andReturn([]);
+        $this->redirect->shouldReceive('getUrlGenerator')
+            ->once()
+            ->andReturn($this->getDummyUrlGenerator());
 
         $this->redirect->shouldReceive('to')->once();
 

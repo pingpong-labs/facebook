@@ -118,7 +118,19 @@ class Facebook {
      */
     public function getRedirectUrl()
     {
-        return $this->redirectUrl ?: $this->config->get('facebook::redirect_url', '/');
+        return $this->redirectUrl ?: $this->getRedirectUrlFromConfig();
+    }
+
+    /**
+     * Get redirect url from config file.
+     * 
+     * @return mixed
+     */
+    public function getRedirectUrlFromConfig()
+    {
+        return $this->redirect->getUrlGenerator()->to(
+            $this->config->get('facebook.redirect_url', '/')
+        );
     }
 
     /**
@@ -223,7 +235,7 @@ class Facebook {
             return $merge;
         }
 
-        return $this->config->get('facebook::scope');
+        return $this->config->get('facebook.scope');
     }
 
     /**

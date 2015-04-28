@@ -17,8 +17,14 @@ class FacebookServiceProvider extends ServiceProvider {
      * @return void
      */
     public function boot()
-    {
-        $this->package('pingpong/facebook');
+    {        
+        $configPath = config_path('facebook.php');
+
+        $this->publishes([
+            __DIR__ . '/../../config/config.php' => $configPath
+        ]);
+
+        $this->mergeConfigFrom($configPath, 'facebook');
     }
 
     /**
@@ -30,7 +36,7 @@ class FacebookServiceProvider extends ServiceProvider {
     {
         $this->app['pingpong.facebook'] = $this->app->share(function ($app)
         {
-            $config = $app['config']->get('facebook::config');
+            $config = $app['config']->get('facebook');
 
             return new Facebook(
                 $app['session.store'],
