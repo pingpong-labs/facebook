@@ -25,7 +25,9 @@ class FacebookServiceProvider extends ServiceProvider
             __DIR__ . '/../../config/config.php' => $configPath
         ]);
 
-        $this->mergeConfigFrom($configPath, 'facebook');
+        if (file_exists($configPath)) {
+            $this->mergeConfigFrom($configPath, 'facebook');
+        }
     }
 
     /**
