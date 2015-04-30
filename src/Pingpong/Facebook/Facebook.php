@@ -38,6 +38,13 @@ class Facebook
     protected $appId;
 
     /**
+     * Display login page as popup.
+     * 
+     * @var boolean
+     */
+    protected $displayAsPopup = false;
+
+    /**
      * @param Store $session
      * @param Redirector $redirect
      * @param Repository $config
@@ -59,6 +66,18 @@ class Facebook
         if (! getenv('FACEBOOK_TESTING')) {
             $this->start();
         }
+    }
+
+    /**
+     * Set display as popup to true.
+     * 
+     * @return self
+     */
+    public function displayAsPopup()
+    {
+        $this->displayAsPopup = true;
+
+        return $this;
     }
 
     /**
@@ -248,7 +267,7 @@ class Facebook
     {
         $scope = $this->getScope($scope);
 
-        return $this->getFacebookHelper()->getLoginUrl($scope, $version);
+        return $this->getFacebookHelper()->getLoginUrl($scope, $version, $this->displayAsPopup);
     }
 
     /**
