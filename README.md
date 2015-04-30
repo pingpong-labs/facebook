@@ -1,4 +1,4 @@
-## Facebook PHP SDK v4 for Laravel 4
+## Facebook PHP SDK v4 for Laravel
 
 [![Build Status](https://travis-ci.org/pingpong-labs/facebook.svg?branch=master)](https://travis-ci.org/pingpong-labs/facebook)
 
