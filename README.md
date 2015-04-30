@@ -86,6 +86,14 @@ $scope = array('email');
 Facebook::authenticate($scope, $version);
 ```
 
+By default when you login to to facebook using oauth, it will show you a login page in website version. If you want to using `popup` version, call `displayAsPopup` method.
+
+```
+Facebook::displayAsPopup();
+
+return Facebook::authenticate($scope, $version);
+``` 
+
 Get user profile for the current logged in user.
 ```php
 Facebook::getProfile();
